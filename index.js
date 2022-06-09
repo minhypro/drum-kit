@@ -1,18 +1,18 @@
 "use strict"
+
 document.querySelectorAll(".drum").forEach((drum) => {
     drum.addEventListener("click", handleClick)
 })
 
-function playDrum (key) {
+document.addEventListener("keydown", function (event) {
+    playDrum(event.key)
+    animation(event.key)
+})
+
+function playDrum(key) {
     let drumType
-    if (key === 'w' || 
-        key === 'a' || 
-        key === 's' || 
-        key === 'd' || 
-        key === 'j' || 
-        key === 'k' || 
-        key === 'l') 
-        {
+    const validKey = ['w', 'a', 's', 'd', 'j', 'k', 'l']
+    if (validKey.includes(key)) {
         switch (key) {
             case 'w':
                 drumType = 'tom-1'
@@ -44,8 +44,16 @@ function playDrum (key) {
 function handleClick(drum) {
     let key = drum.target.textContent
     playDrum(key)
+    animation(key)
 }
 
-document.addEventListener("keypress", function(ele) {
-    playDrum(ele.key)
-})
+function animation(key) {
+    let activeBtn = document.querySelector(`.${key}`)
+
+    if (activeBtn) {
+        activeBtn.classList.add('pressed')
+        setTimeout(() => {
+            activeBtn.classList.remove('pressed')
+        }, 100)
+    }
+}
